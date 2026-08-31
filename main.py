@@ -62,14 +62,51 @@ st.divider()
 
 
 # =========================================================
-# 그래프 2. (다음 그래프를 이 아래에 추가하세요)
+# 그래프 2. 일관객 합계 상위 5편의 날짜별 일관객 비교
 # =========================================================
-# st.header("그래프 2. ...")
+st.header("그래프 2. 상위 5편 일관객 비교")
+
+top5_movies = (
+    df.groupby("영화명")["일관객"].sum().sort_values(ascending=False).head(5).index
+)
+
+top5_df = (
+    df[df["영화명"].isin(top5_movies)]
+    .sort_values("날짜")
+    .loc[:, ["날짜", "영화명", "일관객"]]
+)
+
+fig2 = px.line(
+    top5_df,
+    x="날짜",
+    y="일관객",
+    color="영화명",
+    markers=True,
+    labels={"날짜": "날짜", "일관객": "일일 관객 수", "영화명": "영화명"},
+    title="일관객 합계 상위 5편 날짜별 일관객",
+)
+fig2.update_traces(
+    hovertemplate="날짜: %{x|%Y-%m-%d}<br>일관객: %{y:,}명<extra>%{fullData.name}</extra>"
+)
+fig2.update_layout(hovermode="x unified", legend_title_text="영화명 (클릭해서 켜고 끄기)")
+
+st.plotly_chart(fig2, use_container_width=True)
+
+insight_2 = "이 그래프로 알 수 있는 것: (여기에 한 문장을 입력하세요)"
+st.info(insight_2)
+
+st.divider()
+
+
+# =========================================================
+# 그래프 3. (다음 그래프를 이 아래에 추가하세요)
+# =========================================================
+# st.header("그래프 3. ...")
 #
-# fig2 = px.line(...)
-# st.plotly_chart(fig2, use_container_width=True)
+# fig3 = px.line(...)
+# st.plotly_chart(fig3, use_container_width=True)
 #
-# insight_2 = "이 그래프로 알 수 있는 것: (여기에 한 문장을 입력하세요)"
-# st.info(insight_2)
+# insight_3 = "이 그래프로 알 수 있는 것: (여기에 한 문장을 입력하세요)"
+# st.info(insight_3)
 #
 # st.divider()
