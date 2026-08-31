@@ -140,14 +140,48 @@ st.divider()
 
 
 # =========================================================
-# 그래프 4. (다음 그래프를 이 아래에 추가하세요)
+# 그래프 4. 일관객 합계 TOP 10 영화 (가로 막대그래프)
 # =========================================================
-# st.header("그래프 4. ...")
+st.header("그래프 4. 일관객 합계 TOP 10 영화")
+
+movie_summary = (
+    df.groupby("영화명")
+    .agg(합계관객=("일관객", "sum"), 상영일수=("날짜", "count"))
+    .reset_index()
+)
+top10_movies = movie_summary.sort_values("합계관객", ascending=False).head(10)
+
+fig4 = px.bar(
+    top10_movies,
+    x="합계관객",
+    y="영화명",
+    orientation="h",
+    custom_data=["상영일수"],
+    labels={"합계관객": "일관객 합계", "영화명": "영화명"},
+    title="일관객 합계 TOP 10 영화",
+)
+fig4.update_traces(
+    hovertemplate="%{y}<br>일관객 합계: %{x:,}명<br>10위권 진입 날수: %{customdata[0]}일<extra></extra>"
+)
+fig4.update_yaxes(categoryorder="total ascending")
+
+st.plotly_chart(fig4, use_container_width=True)
+
+insight_4 = "이 그래프로 알 수 있는 것: (여기에 한 문장을 입력하세요)"
+st.info(insight_4)
+
+st.divider()
+
+
+# =========================================================
+# 그래프 5. (다음 그래프를 이 아래에 추가하세요)
+# =========================================================
+# st.header("그래프 5. ...")
 #
-# fig4 = px.line(...)
-# st.plotly_chart(fig4, use_container_width=True)
+# fig5 = px.line(...)
+# st.plotly_chart(fig5, use_container_width=True)
 #
-# insight_4 = "이 그래프로 알 수 있는 것: (여기에 한 문장을 입력하세요)"
-# st.info(insight_4)
+# insight_5 = "이 그래프로 알 수 있는 것: (여기에 한 문장을 입력하세요)"
+# st.info(insight_5)
 #
 # st.divider()
