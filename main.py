@@ -176,7 +176,7 @@ st.divider()
 # =========================================================
 # 그래프 5. 월 × 요일별 일관객 합계 히트맵
 # =========================================================
-st.header("그래프 5. 월 × 요일별 일관객 합계")
+st.header("그래프 5. 월 × 요일별 일관객 평균")
 
 heat_df = df.copy()
 heat_df["월"] = heat_df["날짜"].dt.strftime("%Y-%m")
@@ -186,7 +186,7 @@ heat_df["요일"] = heat_df["날짜"].dt.dayofweek.map(weekday_map)
 weekday_order = ["월", "화", "수", "목", "금", "토", "일"]
 pivot = (
     heat_df.pivot_table(
-        index="월", columns="요일", values="일관객", aggfunc="sum", fill_value=0
+        index="월", columns="요일", values="일관객", aggfunc="mean", fill_value=0
     )
     .reindex(columns=weekday_order)
     .sort_index()
@@ -195,12 +195,12 @@ pivot = (
 fig5 = px.imshow(
     pivot,
     color_continuous_scale="Reds",
-    labels=dict(x="요일", y="월", color="일관객 합계"),
+    labels=dict(x="요일", y="월", color="일관객 평균"),
     aspect="auto",
-    title="월 × 요일별 일관객 합계",
+    title="월 × 요일별 일관객 평균",
 )
 fig5.update_traces(
-    hovertemplate="월: %{y}<br>요일: %{x}<br>합계: %{z:,}명<extra></extra>"
+    hovertemplate="월: %{y}<br>요일: %{x}<br>평균: %{z:,.0f}명<extra></extra>"
 )
 
 st.plotly_chart(fig5, use_container_width=True)
